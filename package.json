@@ -5,7 +5,10 @@
   "description": "[![Actions Status](https://github.com/Mediolan/frontend-project-12/workflows/hexlet-check/badge.svg)](https://github.com/Mediolan/frontend-project-12/actions)",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/build",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "cd frontend && npm ci"
   },
   "repository": {
     "type": "git",
@@ -16,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/Mediolan/frontend-project-12/issues"
   },
-  "homepage": "https://github.com/Mediolan/frontend-project-12#readme"
+  "homepage": "https://github.com/Mediolan/frontend-project-12#readme",
+  "dependencies": {
+    "@hexlet/chat-server": "^1.1.6"
+  }
 }
