@@ -2,7 +2,8 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import '../index.css';
-import * as Yup from 'yup';
+import axios from 'axios';
+import { redirect } from 'react-router-dom';
 
 const Login = () => {
   const formik = useFormik({
@@ -10,17 +11,15 @@ const Login = () => {
       username: '',
       password: '',
     },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .max(20, 'Must be 20 characters or less')
-        .required('Required'),
-      password: Yup.string()
-        .max(20, 'Must be 20 characters or less')
-        .required('Required'),
-    }),
-    onSubmit: (values) => {
-      // eslint-disable-next-line no-alert
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      try {
+        const userToken = await axios.post('/api/v1/login', values);
+        localStorage.setItem('token', userToken.data.token);
+        localStorage.setItem('user', userToken.data.username);
+      } catch (e) {
+        formik.setErrors();
+      }
+      redirect('/');
     },
   });
 
@@ -40,9 +39,6 @@ const Login = () => {
         <label className={formik.values.username && 'filled'} htmlFor="username">
           Ваш ник
         </label>
-        {formik.touched.username && formik.errors.username ? (
-          <div>{formik.errors.username}</div>
-        ) : null}
       </div>
       <div className="form-floating">
         <input
@@ -59,8 +55,8 @@ const Login = () => {
         <label className={formik.values.password && 'filled'} htmlFor="password">
           Пароль
         </label>
-        {formik.touched.password && formik.errors.password ? (
-          <div>{formik.errors.password}</div>
+        {!formik.isValid ? (
+          <div className="invalid-tooltip">Неверные имя пользователя или пароль</div>
         ) : null}
       </div>
       <button className="w-100 mb-3 btn btn-outline-primary" type="submit">Войти</button>
