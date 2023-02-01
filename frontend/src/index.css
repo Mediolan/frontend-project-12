@@ -9,10 +9,6 @@ html {
   box-sizing: inherit;
 }
 
-body {
-  background-color: #fdfdfd;
-}
-
 .App {
   font-family: 'Inter', sans-serif;
 }
@@ -26,62 +22,11 @@ form {
   gap: 16px;
 }
 
-/* Input style */
-.form-floating {
-  position: relative;
-  display: flex;
-  flex-direction: column;
+.btn:focus {
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25) !important;
 }
 
-.form-floating:focus-within label {
-  transform: translate(0, 12px) scale(0.8);
-  color: #0d6efd;
-}
-
-.form-floating .filled {
-  transform: translate(0, 12px) scale(0.8);
-}
-
-.form-floating label {
-  position: absolute;
-  pointer-events: none;
-  transform: translate(0, 23px) scale(1);
-  transform-origin: top left;
-  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-  color: #000000;
-  font-size: 16px;
-  line-height: 1;
-  left: 16px;
-}
-
-.form-floating input {
-  height: 64px;
-  border-radius: 4px;
-  border: 1px solid #ced4da;
-  padding: 24px 16px 4px 16px;
-  font-size: 16px;
-  line-height: 1;
-  outline: none;
-  box-shadow: none;
-  transition: 200ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-}
-
-.form-floating input:focus {
-  box-shadow: 0 0 0 2px #79b1ff;
-}
-
-.btn {
-  background-color: transparent;
-}
-
-.btn-outline-primary {
-  border: 1px solid transparent;
-  border-color: #0d6efd;
-  color: #0d6efd;
-}
-
-.btn-outline-primary:hover {
-  color: rgb(13, 110, 253);
-  background-color: rgb(222, 9, 9);
-  border-color: rgb(13, 110, 253);
+.text-primary {
+  outline: none !important; 
+  border-style: none !important;
 }
