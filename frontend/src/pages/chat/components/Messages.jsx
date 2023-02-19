@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectors } from '../../../store/slices/messagesSlice';
+import { getMessagesForCurrentChannel } from '../../../store/selectors';
 
 const Message = ({ username, body }) => (
   <div className="text-break mb-2">
@@ -10,10 +10,8 @@ const Message = ({ username, body }) => (
   </div>
 );
 
-const Messages = ({ currentChannelId }) => {
-  const allMessages = Object.values(useSelector(selectors.selectAll));
-  const currentChannelMessages = allMessages
-    .filter((message) => message.channelId === currentChannelId);
+const Messages = () => {
+  const currentChannelMessages = useSelector(getMessagesForCurrentChannel);
   return (
     <>
       {currentChannelMessages.map(({ id, username, body }) => (

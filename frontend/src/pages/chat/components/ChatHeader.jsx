@@ -1,10 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { selectors } from '../../../store/slices/messagesSlice';
+import { getMessagesCount, getCurrentChannelName } from '../../../store/selectors';
 
-const ChatHeader = ({ currentChannelId }) => {
-  const currentChannelName = useSelector((state) => state.channels.entities[currentChannelId].name);
-  const messageCount = useSelector(selectors.selectTotal);
+const ChatHeader = () => {
+  const currentChannelName = useSelector(getCurrentChannelName);
+  const messagesCount = useSelector(getMessagesCount);
 
   return (
     <div className="bg-light mb-4 p-3 shadow-sm small">
@@ -16,7 +16,7 @@ const ChatHeader = ({ currentChannelId }) => {
         </b>
       </p>
       <span className="text-muted">
-        {messageCount}
+        {messagesCount}
         {' '}
         сообщений
       </span>

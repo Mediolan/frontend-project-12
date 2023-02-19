@@ -1,32 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
-html {
-  box-sizing: border-box;
-}
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
 
 .App {
   font-family: 'Inter', sans-serif;
 }
 
-form {
-  padding-top: 80px;
-  max-width: 340px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
+.border-0:focus {
+  box-shadow: 0 0 0 .25rem rgba(108, 117, 125, .50) !important; 
 }
-
-.btn:focus {
+.btn-group-vertical:focus {
+  border: .09rem solid !important;
+  border-color: rgba(13,110,253, 0) !important;
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25) !important;
+}
+.btn-secondary:focus {
+  box-shadow: 0 0 0 .25rem rgba(108, 117, 125, .50) !important;
+}
+.btn-primary:focus {
   box-shadow: 0 0 0 .25rem rgba(13,110,253,.25) !important;
 }
 
-.text-primary {
-  outline: none !important; 
-  border-style: none !important;
-}
+

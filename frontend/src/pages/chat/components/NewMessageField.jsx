@@ -4,13 +4,13 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useAuth } from '../../../context';
-// eslint-disable-next-line import/no-cycle
-import { socket } from '../../../init';
+import { useSelector } from 'react-redux';
+import { useAuth, useSocketContext } from '../../../context';
 
-const NewMessageField = ({ currentChannelId }) => {
+const NewMessageField = () => {
   const { user: { username } } = useAuth();
-
+  const { sendMessage } = useSocketContext();
+  const { currentChannelId } = useSelector((state) => state.channels);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -35,11 +35,10 @@ const NewMessageField = ({ currentChannelId }) => {
       };
 
       try {
-        await socket.emit('newMessage', message);
-        console.log('ggggggggggggggggggggggggggggggg', message);
+        await sendMessage(message);
         formik.resetForm();
       } catch (err) {
-        // log('message.send.error', err);
+        console.log(err);
       }
       formik.setSubmitting(false);
       inputRef.current.focus();
@@ -63,7 +62,7 @@ const NewMessageField = ({ currentChannelId }) => {
           placeholder="Введите сообщение..."
           className="border-0 p-0 ps-2"
         />
-        <Button variant="group-vertical" type="submit" disabled={isInvalid}>
+        <Button variant="group-vertical" className=" border-0" type="submit" disabled={isInvalid}>
           <ArrowRightSquare size={20} />
           <span className="visually-hidden">Отправить</span>
         </Button>
