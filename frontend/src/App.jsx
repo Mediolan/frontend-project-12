@@ -9,6 +9,7 @@ import { useDispatch } from 'react-redux';
 import Chat from './pages/chat/Chat.jsx';
 import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
+import SingUp from './pages/SingUp.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import { fetchAuthData } from './store/slices/loaderSlice.js';
 import AuthContext, { useAuth } from './context/index.jsx';
@@ -43,7 +44,6 @@ const PrivateRoute = ({ children }) => {
 
 const App = () => {
   const dispatch = useDispatch();
-  const userData = JSON.parse(localStorage.getItem('user'));
 
   const router = createBrowserRouter([
     {
@@ -54,11 +54,18 @@ const App = () => {
         {
           index: true,
           element: <PrivateRoute><Chat /></PrivateRoute>,
-          loader: () => dispatch(fetchAuthData(userData.token)),
+          loader: () => {
+            const userData = JSON.parse(localStorage.getItem('user'));
+            return dispatch(fetchAuthData(userData.token));
+          },
         },
         {
           path: 'login',
           element: <Login />,
+        },
+        {
+          path: 'singup',
+          element: <SingUp />,
         },
       ],
     },
