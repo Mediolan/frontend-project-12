@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useState } from 'react';
 import {
@@ -54,9 +55,11 @@ const App = () => {
         {
           index: true,
           element: <PrivateRoute><Chat /></PrivateRoute>,
-          loader: () => {
+          loader: async () => {
             const userData = JSON.parse(localStorage.getItem('user'));
-            return dispatch(fetchAuthData(userData.token));
+            if (userData) {
+              await dispatch(fetchAuthData(userData.token));
+            }
           },
         },
         {
@@ -64,7 +67,7 @@ const App = () => {
           element: <Login />,
         },
         {
-          path: 'singup',
+          path: 'signup',
           element: <SingUp />,
         },
       ],

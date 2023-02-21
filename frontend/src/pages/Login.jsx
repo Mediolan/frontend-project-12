@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Button, Form, FloatingLabel } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/index.jsx';
 
 const Login = () => {
@@ -54,6 +54,7 @@ const Login = () => {
                       isInvalid={formik.errors.authentication}
                       onChange={formik.handleChange}
                       value={formik.values.username}
+                      ref={inputRef}
                     />
                   </FloatingLabel>
                 </Form.Group>
@@ -76,6 +77,13 @@ const Login = () => {
                 </Form.Group>
                 <Button className="w-100 mb-3" variant="outline-primary" type="submit">Войти</Button>
               </Form>
+            </div>
+            <div className="card-footer p-4">
+              <div className="text-center">
+                <span>Нет аккаунта?</span>
+                {' '}
+                <Link to="/signup">Регистрация</Link>
+              </div>
             </div>
           </div>
         </div>

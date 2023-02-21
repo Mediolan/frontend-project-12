@@ -11,7 +11,7 @@
 .btn-group-vertical:focus {
   border: .09rem solid !important;
   border-color: rgba(13,110,253, 0) !important;
-  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25) !important;
+  box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
 }
 .btn-secondary:focus {
   box-shadow: 0 0 0 .25rem rgba(108, 117, 125, .50) !important;
@@ -19,7 +19,7 @@
 .btn-primary:focus {
   box-shadow: 0 0 0 .25rem rgba(13,110,253,.25) !important;
 }
-.outline-primary:focus {
+.btn-outline-primary:focus {
   box-shadow: 0 0 0 .25rem rgba(13,110,253,.25) !important;
 }
 
