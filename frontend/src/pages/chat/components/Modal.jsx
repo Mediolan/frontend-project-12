@@ -1,7 +1,8 @@
 import { useFormik } from 'formik';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import { closeModal } from '../../../store/slices/modalSlice.js';
 import { useSocketContext } from '../../../context/index.jsx';
 import { channelsSelectors, getChannelsName } from '../../../store/selectors.js';
@@ -9,6 +10,7 @@ import { channelNameValidation } from '../../../schemas/validations.js';
 // eslint-disable-next-line max-len
 
 const AddNewChannel = ({ handleClose }) => {
+  const { t } = useTranslation();
   const { createChannel } = useSocketContext();
   const channels = useSelector(getChannelsName);
 
@@ -34,14 +36,14 @@ const AddNewChannel = ({ handleClose }) => {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>{t('modals.add')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
             <Form.Control
               className="mb-2"
-              placeholder="Название канала"
+              placeholder={t('modals.channelName')}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.name}
@@ -54,10 +56,10 @@ const AddNewChannel = ({ handleClose }) => {
               className="visually-hidden"
               htmlFor="name"
             >
-              Имя канала
+              {t('modals.channelName')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">
-              {formik.errors.name}
+              {t(formik.errors.name)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button
@@ -65,14 +67,14 @@ const AddNewChannel = ({ handleClose }) => {
                 variant="secondary"
                 onClick={handleClose}
               >
-                Отменить
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={formik.isSubmitting}
               >
-                Отправить
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>
@@ -83,6 +85,7 @@ const AddNewChannel = ({ handleClose }) => {
 };
 
 const RenameChannel = ({ handleClose }) => {
+  const { t } = useTranslation();
   const { renameChannel } = useSocketContext();
   const channels = useSelector(getChannelsName);
   const channelId = useSelector((state) => state.modal.channelId);
@@ -115,13 +118,14 @@ const RenameChannel = ({ handleClose }) => {
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>{t('modals.rename')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group>
             <Form.Control
               className="mb-2"
+              placeholder={t('modals.newChannelName')}
               ref={inputRef}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -134,10 +138,10 @@ const RenameChannel = ({ handleClose }) => {
               className="visually-hidden"
               htmlFor="name"
             >
-              Имя канала
+              {t('modals.newChannelName')}
             </Form.Label>
             <Form.Control.Feedback type="invalid">
-              {formik.errors.name}
+              {t(formik.errors.name)}
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button
@@ -145,14 +149,14 @@ const RenameChannel = ({ handleClose }) => {
                 variant="secondary"
                 onClick={handleClose}
               >
-                Отменить
+                {t('modals.cancel')}
               </Button>
               <Button
                 variant="primary"
                 type="submit"
                 disabled={formik.isSubmitting}
               >
-                Отправить
+                {t('modals.submit')}
               </Button>
             </div>
           </Form.Group>
@@ -163,38 +167,44 @@ const RenameChannel = ({ handleClose }) => {
 };
 
 const RemoveChannel = ({ handleClose }) => {
+  const { t } = useTranslation();
+  const [sending, setSending] = useState(false);
   const { removeChannel } = useSocketContext();
   const channelId = useSelector((state) => state.modal.channelId);
   const handleRemove = async () => {
+    setSending(true);
     try {
       await removeChannel({ id: channelId });
       handleClose();
     } catch (e) {
       console.log(e);
+      setSending(false);
     }
   };
 
   return (
     <>
       <Modal.Header closeButton>
-        <Modal.Title>Modal heading</Modal.Title>
+        <Modal.Title>{t('modals.remove')}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <p className="lead">Уверены?</p>
+        <p className="lead">{t('modals.confirmation')}</p>
         <div className="d-flex justify-content-end">
           <Button
             className="me-2"
             variant="secondary"
             onClick={handleClose}
+            disabled={sending}
           >
-            Отменить
+            {t('modals.cancel')}
           </Button>
           <Button
             variant="danger"
             type="button"
             onClick={handleRemove}
+            disabled={sending}
           >
-            Удалить
+            {t('modals.delete')}
           </Button>
         </div>
       </Modal.Body>

@@ -1,16 +1,23 @@
+import React from 'react';
 import { useRouteError } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ErrorPage = () => {
+  const { t } = useTranslation();
   const error = useRouteError();
-  console.error(error);
+  const errorMessage = error.statusText ? (
+    <>
+      {t('notFound.message')}
+      <a href="/">{t('notFound.linkText')}</a>
+    </>
+  ) : <i>{error.message}</i>;
 
   return (
-    <div id="error-page">
-      <h1>Упс!</h1>
-      <p>Извините, произошла неожиданная ошибка.</p>
-      <p>
-        <i>{error.statusText || error.message}</i>
-      </p>
+    <div className="text-center" id="error-page">
+      <h1 className="h4 text-muted">
+        {t('notFound.title')}
+      </h1>
+      {errorMessage}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { io } from 'socket.io-client';
+import i18next from 'i18next';
+import { I18nextProvider, initReactI18next } from 'react-i18next';
 import { Provider } from 'react-redux';
 import store from './store/index.js';
 import App from './App';
@@ -11,9 +13,19 @@ import {
   deleteChannel,
   updateChannel,
 } from './store/slices/channelsSlice.js';
+import resources from './locales/index.js';
 
 export default async () => {
   const socket = io();
+  const i18nextInstance = i18next.createInstance();
+
+  await i18nextInstance
+    .use(initReactI18next)
+    .init({
+      lng: 'ru',
+      resources,
+      fallbackLng: 'ru',
+    });
 
   const sendMessage = (message) => {
     socket.timeout(3000).emit('newMessage', message, (err, response) => {
@@ -63,15 +75,17 @@ export default async () => {
 
   return (
     <Provider store={store}>
-      <SocketContext.Provider value={{
-        sendMessage,
-        createChannel,
-        renameChannel,
-        removeChannel,
-      }}
-      >
-        <App />
-      </SocketContext.Provider>
+      <I18nextProvider i18nextInstance={i18nextInstance}>
+        <SocketContext.Provider value={{
+          sendMessage,
+          createChannel,
+          renameChannel,
+          removeChannel,
+        }}
+        >
+          <App />
+        </SocketContext.Provider>
+      </I18nextProvider>
     </Provider>
   );
 };

@@ -3,10 +3,12 @@ import { Button, Form, FloatingLabel } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/index.jsx';
 
 const Login = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { logIn } = useAuth();
   const inputRef = useRef();
   const formik = useFormik({
@@ -26,7 +28,7 @@ const Login = () => {
         if (error.code === 'ERR_NETWORK') {
           console.log(error);
         }
-        if (error.response.status === 401) {
+        if (error.response?.status === 401) {
           actions.setFieldError('authentication', 'auth');
           inputRef.current.select();
         }
@@ -42,13 +44,13 @@ const Login = () => {
             <div className="card-body row p-5">
               <div className="col-12 col-md-6 d-flex align-items-center justify-content-center" />
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
-                <h1 className="text-center mb-4">Войти</h1>
+                <h1 className="text-center mb-4">{t('login.title')}</h1>
                 <Form.Group className="form-floating mb-3" controlId="username">
-                  <FloatingLabel className={formik.values.username && 'filled'} label="Ваш ник" controlId="username">
+                  <FloatingLabel className={formik.values.username && 'filled'} label={t('login.username')} controlId="username">
                     <Form.Control
                       name="username"
                       autoComplete="username"
-                      placeholder="Your nickname"
+                      placeholder={t('login.username')}
                       required
                       autoFocus
                       isInvalid={formik.errors.authentication}
@@ -59,11 +61,11 @@ const Login = () => {
                   </FloatingLabel>
                 </Form.Group>
                 <Form.Group className="form-floating mb-4" controlId="password">
-                  <FloatingLabel className={formik.values.password && 'filled'} label="Пароль" controlId="password">
+                  <FloatingLabel className={formik.values.password && 'filled'} label={t('login.password')} controlId="password">
                     <Form.Control
                       name="password"
                       autoComplete="current-password"
-                      placeholder="Your password"
+                      placeholder={t('login.password')}
                       required
                       type="password"
                       isInvalid={formik.errors.authentication}
@@ -71,18 +73,18 @@ const Login = () => {
                       value={formik.values.password}
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
-                      {formik.errors.authentication && 'Неверные имя пользователя или пароль'}
+                      {formik.errors.authentication && t('validation.loginFailed')}
                     </Form.Control.Feedback>
                   </FloatingLabel>
                 </Form.Group>
-                <Button className="w-100 mb-3" variant="outline-primary" type="submit">Войти</Button>
+                <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('login.submit')}</Button>
               </Form>
             </div>
             <div className="card-footer p-4">
               <div className="text-center">
-                <span>Нет аккаунта?</span>
+                <span>{t('login.notRegistered')}</span>
                 {' '}
-                <Link to="/signup">Регистрация</Link>
+                <Link to="/signup">{t('login.signup')}</Link>
               </div>
             </div>
           </div>

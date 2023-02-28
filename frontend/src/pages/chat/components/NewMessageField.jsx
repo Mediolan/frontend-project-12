@@ -4,10 +4,13 @@ import { Form, InputGroup, Button } from 'react-bootstrap';
 import { ArrowRightSquare } from 'react-bootstrap-icons';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { useAuth, useSocketContext } from '../../../context';
 
 const NewMessageField = () => {
+  const { t } = useTranslation();
+
   const { user: { username } } = useAuth();
   const { sendMessage } = useSocketContext();
   const { currentChannelId } = useSelector((state) => state.channels);
@@ -57,14 +60,14 @@ const NewMessageField = () => {
           onBlur={formik.handleBlur}
           value={formik.values.body}
           name="body"
-          aria-label="Новое сообщение"
+          aria-label={t('chat.newMessage')}
           disabled={formik.isSubmitting}
-          placeholder="Введите сообщение..."
+          placeholder={t('chat.type')}
           className="border-0 p-0 ps-2"
         />
         <Button variant="group-vertical" className=" border-0" type="submit" disabled={isInvalid}>
           <ArrowRightSquare size={20} />
-          <span className="visually-hidden">Отправить</span>
+          <span className="visually-hidden">{t('chat.send')}</span>
         </Button>
       </InputGroup>
     </Form>
