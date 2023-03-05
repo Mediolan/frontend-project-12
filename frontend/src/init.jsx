@@ -3,6 +3,7 @@ import React from 'react';
 import { io } from 'socket.io-client';
 import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
+import leoProfanity from 'leo-profanity';
 import { Provider } from 'react-redux';
 import store from './store/index.js';
 import App from './App';
@@ -16,9 +17,10 @@ import {
 import resources from './locales/index.js';
 
 export default async () => {
-  const socket = io();
-  const i18nextInstance = i18next.createInstance();
+  const dictionaries = leoProfanity.getDictionary('ru', 'en');
+  leoProfanity.add(dictionaries);
 
+  const i18nextInstance = i18next.createInstance();
   await i18nextInstance
     .use(initReactI18next)
     .init({
@@ -27,6 +29,7 @@ export default async () => {
       fallbackLng: 'ru',
     });
 
+  const socket = io();
   const sendMessage = (message) => {
     socket.timeout(3000).emit('newMessage', message, (err, response) => {
       if (err) {

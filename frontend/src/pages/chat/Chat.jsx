@@ -16,9 +16,9 @@ const Chat = () => {
     if (loadingStatus === 'failed') {
       logOut();
       if (!error.isAxiosError) {
-        toast.error(t('errors.unknown'));
+        toast.error(t('toast.unknownErr'));
       }
-      toast.error(t('errors.network'));
+      toast.error(t('toast.networkErr'));
     }
   }, [loadingStatus, logOut, error, t]);
 

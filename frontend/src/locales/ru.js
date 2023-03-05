@@ -60,6 +60,13 @@ export default {
       hexletChat: 'Hexlet Chat',
       logout: 'Выйти',
     },
+    toast: {
+      created: 'Канал создан',
+      renamed: 'Канал переименован',
+      removed: 'Канал удалён',
+      networkErr: 'Ошибка соединения',
+      unknownErr: 'Неизвестная ошибка',
+    },
     errors: {
       network: 'Ошибка соединения',
       unknown: 'Неизвестная ошибка',

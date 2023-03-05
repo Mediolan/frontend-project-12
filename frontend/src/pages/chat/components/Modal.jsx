@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+import leoProfanity from 'leo-profanity';
 import { closeModal } from '../../../store/slices/modalSlice.js';
 import { useSocketContext } from '../../../context/index.jsx';
 import { channelsSelectors, getChannelsName } from '../../../store/selectors.js';
@@ -20,8 +22,11 @@ const AddNewChannel = ({ handleClose }) => {
     },
     validationSchema: channelNameValidation(channels),
     onSubmit: async ({ name }, actions) => {
+      const filteredName = leoProfanity.clean(name);
+      const newChannel = { name: filteredName };
       try {
-        await createChannel({ name });
+        await createChannel(newChannel);
+        toast.success(t('toast.created'));
         handleClose();
       } catch (e) {
         console.log(e);
@@ -43,6 +48,7 @@ const AddNewChannel = ({ handleClose }) => {
           <Form.Group>
             <Form.Control
               className="mb-2"
+              disabled={formik.isSubmitting}
               placeholder={t('modals.channelName')}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -103,16 +109,20 @@ const RenameChannel = ({ handleClose }) => {
     },
     validationSchema: channelNameValidation(channels),
     onSubmit: async ({ name }, actions) => {
+      const filteredName = leoProfanity.clean(name);
+      const renamedChannel = { name: filteredName, id: channelId };
       try {
-        await renameChannel({ name, id: channelId });
+        await renameChannel(renamedChannel);
+        toast.success(t('toast.renamed'));
         handleClose();
       } catch (e) {
         inputRef.current.select();
         actions.setSubmitting(false);
         console.log(e);
       }
-      console.log(actions);
     },
+    validateOnBlur: false,
+    validateOnChange: false,
   });
 
   return (
@@ -125,6 +135,7 @@ const RenameChannel = ({ handleClose }) => {
           <Form.Group>
             <Form.Control
               className="mb-2"
+              disabled={formik.isSubmitting}
               placeholder={t('modals.newChannelName')}
               ref={inputRef}
               onChange={formik.handleChange}
@@ -175,6 +186,7 @@ const RemoveChannel = ({ handleClose }) => {
     setSending(true);
     try {
       await removeChannel({ id: channelId });
+      toast.success(t('toast.removed'));
       handleClose();
     } catch (e) {
       console.log(e);

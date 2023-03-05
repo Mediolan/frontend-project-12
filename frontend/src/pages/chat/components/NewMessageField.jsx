@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import leoProfanity from 'leo-profanity';
 import { useAuth, useSocketContext } from '../../../context';
 
 const NewMessageField = () => {
@@ -31,8 +32,9 @@ const NewMessageField = () => {
     initialValues: { body: '' },
     validationSchema,
     onSubmit: async ({ body }) => {
+      const filteredMsg = leoProfanity.clean(body);
       const message = {
-        body,
+        body: filteredMsg,
         channelId: currentChannelId,
         username,
       };

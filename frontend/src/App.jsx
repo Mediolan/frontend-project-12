@@ -7,6 +7,7 @@ import {
   Navigate,
 } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { ToastContainer } from 'react-toastify';
 import Chat from './pages/chat/Chat.jsx';
 import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
@@ -49,7 +50,11 @@ const App = () => {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <AuthProvider><Home /></AuthProvider>,
+      element: (
+        <AuthProvider>
+          <Home />
+          <ToastContainer />
+        </AuthProvider>),
       errorElement: <ErrorPage />,
       children: [
         {

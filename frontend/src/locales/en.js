@@ -58,6 +58,13 @@ export default {
       hexletChat: 'Hexlet Chat',
       logout: 'Log out',
     },
+    toast: {
+      created: 'Channel created',
+      renamed: 'Channel renamed',
+      removed: 'Channel removed',
+      networkErr: 'Network Error',
+      unknownErr: 'Unknown Error',
+    },
     errors: {
       network: 'Network Error',
       unknown: 'Unknown Error',
