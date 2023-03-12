@@ -5,6 +5,7 @@ import i18next from 'i18next';
 import { I18nextProvider, initReactI18next } from 'react-i18next';
 import leoProfanity from 'leo-profanity';
 import { Provider } from 'react-redux';
+import { Provider as RollbarProvider, ErrorBoundary } from '@rollbar/react';
 import store from './store/index.js';
 import App from './App';
 import { SocketContext } from './context/index.jsx';
@@ -76,19 +77,30 @@ export default async () => {
     store.dispatch(deleteChannel(payload));
   });
 
+  const rollbarConfig = {
+    enabled: true,
+    accessToken: 'db0a3204565d43999cc198b6c370f358', // process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  };
+
   return (
-    <Provider store={store}>
-      <I18nextProvider i18nextInstance={i18nextInstance}>
-        <SocketContext.Provider value={{
-          sendMessage,
-          createChannel,
-          renameChannel,
-          removeChannel,
-        }}
-        >
-          <App />
-        </SocketContext.Provider>
-      </I18nextProvider>
-    </Provider>
+    <RollbarProvider config={rollbarConfig}>
+      <ErrorBoundary>
+        <Provider store={store}>
+          <I18nextProvider i18nextInstance={i18nextInstance}>
+            <SocketContext.Provider value={{
+              sendMessage,
+              createChannel,
+              renameChannel,
+              removeChannel,
+            }}
+            >
+              <App />
+            </SocketContext.Provider>
+          </I18nextProvider>
+        </Provider>
+      </ErrorBoundary>
+    </RollbarProvider>
   );
 };
