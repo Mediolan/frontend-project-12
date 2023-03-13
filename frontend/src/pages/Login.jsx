@@ -35,7 +35,6 @@ const Login = () => {
       }
     },
   });
-  const Test = { test: 'test' };
 
   return (
     <div className="container-fluid h-100">
@@ -73,7 +72,6 @@ const Login = () => {
                       onChange={formik.handleChange}
                       value={formik.values.password}
                     />
-                    <Test />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {formik.errors.authentication && t('validation.loginFailed')}
                     </Form.Control.Feedback>
