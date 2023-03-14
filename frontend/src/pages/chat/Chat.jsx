@@ -11,6 +11,7 @@ const Chat = () => {
   const { t } = useTranslation();
   const { loadingStatus, error } = useSelector((state) => state.loader);
   const { logOut } = useAuth();
+
   useEffect(() => {
     if (loadingStatus === 'failed') {
       logOut();
@@ -34,6 +35,7 @@ const Chat = () => {
           </div>
         </div>
       </div>
+
     </>
   );
 };

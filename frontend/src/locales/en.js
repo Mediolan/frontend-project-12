@@ -58,6 +58,7 @@ export default {
       hexletChat: 'Hexlet Chat',
       logout: 'Log out',
     },
+    loading: 'Loading...',
     toast: {
       created: 'Channel created',
       renamed: 'Channel renamed',

@@ -34,7 +34,6 @@ const loaderSlice = createSlice({
       .addCase(fetchAuthData.rejected, (state, action) => {
         state.loadingStatus = 'failed';
         state.error = action.error;
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', action.error);
       });
   },
 });

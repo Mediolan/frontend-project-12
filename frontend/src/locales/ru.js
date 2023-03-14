@@ -60,6 +60,7 @@ export default {
       hexletChat: 'Hexlet Chat',
       logout: 'Выйти',
     },
+    loading: 'Загрузка...',
     toast: {
       created: 'Канал создан',
       renamed: 'Канал переименован',
