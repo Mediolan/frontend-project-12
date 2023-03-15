@@ -23,15 +23,8 @@ const Home = () => {
     }
   }, [loadingStatus, logOut, error, t]);
 
-  return (loadingStatus === 'loading'
-    ? (
-      <div className="h-100 d-flex justify-content-center align-items-center">
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">{t('loading')}</span>
-        </Spinner>
-      </div>
-    )
-    : (
+  return (
+    (
       <>
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <div className="container">
@@ -39,7 +32,14 @@ const Home = () => {
             {!!user && <Button type="button" onClick={logOut}>{t('header.logout')}</Button>}
           </div>
         </nav>
-        <Outlet />
+        {loadingStatus === 'loading'
+          ? (
+            <div className="h-100 d-flex justify-content-center align-items-center">
+              <Spinner animation="border" role="status">
+                <span className="visually-hidden">{t('loading')}</span>
+              </Spinner>
+            </div>
+          ) : <Outlet />}
       </>
     )
   );
