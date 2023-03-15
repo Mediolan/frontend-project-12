@@ -42,8 +42,8 @@ const NewMessageField = () => {
       try {
         await sendMessage(message);
         formik.resetForm();
-      } catch (err) {
-        console.log(err);
+      } catch (e) {
+        console.log(e);
       }
       formik.setSubmitting(false);
       inputRef.current.focus();

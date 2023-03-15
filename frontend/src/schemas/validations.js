@@ -7,6 +7,10 @@ setLocale({
     notOneOf: () => ('validation.uniq'),
     test: () => ('validation.mastMatch'),
   },
+  string: {
+    min: () => ('validation.requirements'),
+    max: () => ('validation.requirements'),
+  },
 });
 
 export const channelNameValidation = (channels) => yup.object().shape({
@@ -14,8 +18,8 @@ export const channelNameValidation = (channels) => yup.object().shape({
     .string()
     .trim()
     .required()
-    .min(3, 'validation.channelRequirements')
-    .max(20, 'validation.channelRequirements')
+    .min(3)
+    .max(20)
     .notOneOf(channels),
 });
 
@@ -24,8 +28,8 @@ export const registrationFormValidation = yup.object().shape({
     .string()
     .trim()
     .required()
-    .min(3, 'validation.usernameRequirements')
-    .max(20, 'validation.usernameRequirements'),
+    .min(3)
+    .max(20),
   password: yup
     .string()
     .trim()

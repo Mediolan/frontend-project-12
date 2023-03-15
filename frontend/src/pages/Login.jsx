@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../context/index.jsx';
 
 const Login = () => {
@@ -25,12 +26,16 @@ const Login = () => {
           navigate('/');
         }
       } catch (error) {
-        if (error.code === 'ERR_NETWORK') {
-          console.log(error);
+        console.error(error);
+        if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
+          return;
         }
         if (error.response?.status === 401) {
           actions.setFieldError('authentication', 'auth');
           inputRef.current.select();
+        } else {
+          toast.error(t('errors.network'));
         }
       }
     },
@@ -42,7 +47,13 @@ const Login = () => {
         <div className="col-12 col-md-8 col-xxl-6">
           <div className="card shadow-sm">
             <div className="card-body row p-5">
-              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center" />
+              <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                <img
+                  src="./login.jpg"
+                  className="rounded-circle"
+                  alt={t('login.title')}
+                />
+              </div>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
                 <h1 className="text-center mb-4">{t('login.title')}</h1>
                 <Form.Group className="form-floating mb-3" controlId="username">

@@ -46,9 +46,9 @@ const SingUp = () => {
             <div className="card-body d-flex flex-column flex-md-row justify-content-around align-items-center p-5">
               <div>
                 <img
-                  src="./gav.png"
+                  src="./registration.jpg"
                   className="rounded-circle"
-                  alt="Регистрация"
+                  alt={t('signup.title')}
                 />
               </div>
               <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={formik.handleSubmit}>
@@ -114,7 +114,7 @@ const SingUp = () => {
                     />
                     <Form.Control.Feedback type="invalid" tooltip>
                       {formik.errors.registration
-                        ? t('validation.alreadyExist')
+                        ? t('validation.alreadyExists')
                         : t('validation.mustMatch')}
                     </Form.Control.Feedback>
                   </FloatingLabel>

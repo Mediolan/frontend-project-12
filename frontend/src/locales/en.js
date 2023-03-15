@@ -42,11 +42,10 @@ export default {
     validation: {
       required: 'Required',
       loginFailed: 'Username or password is incorrect',
-      usernameRequirements: 'Name allowed from 3 to 20 characters',
-      channelRequirements: 'Channel name allowed from 3 to 20 characters',
+      requirements: 'Must be 3 to 20 characters',
       alreadyExists: 'Username already taken',
       uniq: 'Channel name should be unique',
-      passMin: 'Password must be at least 6 characters',
+      passMin: 'Min 6 characters',
       mustMatch: 'Passwords must match',
     },
     notFound: {

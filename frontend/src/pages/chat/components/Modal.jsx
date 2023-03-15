@@ -29,10 +29,8 @@ const AddNewChannel = ({ handleClose }) => {
         toast.success(t('toast.created'));
         handleClose();
       } catch (e) {
-        console.log(e);
         actions.setSubmitting(false);
       }
-      console.log(actions);
     },
     validateOnBlur: false,
     validateOnChange: false,
@@ -118,7 +116,9 @@ const RenameChannel = ({ handleClose }) => {
       } catch (e) {
         inputRef.current.select();
         actions.setSubmitting(false);
-        console.log(e);
+        if (!e.isAxiosError) {
+          throw e;
+        }
       }
     },
     validateOnBlur: false,

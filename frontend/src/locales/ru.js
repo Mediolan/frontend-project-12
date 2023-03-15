@@ -44,11 +44,10 @@ export default {
     validation: {
       required: 'Обязательное поле',
       loginFailed: 'Неверные имя пользователя или пароль',
-      usernameRequirements: 'Имя должно быть от 3 до 20 символов',
-      channelRequirements: 'Имя канала должно быть от 3 до 20 символов',
+      requirements: 'От 3 до 20 символов',
       alreadyExists: 'Такой пользователь уже существует',
       uniq: 'Имя канала должно быть уникальным',
-      passMin: 'Пароль не может быть короче 6 символов',
+      passMin: 'Не менее 6 символов',
       mustMatch: 'Пароли должны совпадать',
     },
     notFound: {
