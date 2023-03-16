@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/index.jsx';
+import routes from '../routes.js';
 
 const Home = () => {
   const { t } = useTranslation();
@@ -28,7 +29,7 @@ const Home = () => {
       <>
         <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
           <div className="container">
-            <Link className="navbar-brand" to="/">{t('header.hexletChat')}</Link>
+            <Link className="navbar-brand" to={routes.home}>{t('header.hexletChat')}</Link>
             {!!user && <Button type="button" onClick={logOut}>{t('header.logout')}</Button>}
           </div>
         </nav>

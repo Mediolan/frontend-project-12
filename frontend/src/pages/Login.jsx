@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { useAuth } from '../context/index.jsx';
+import routes from '../routes.js';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ const Login = () => {
     },
     onSubmit: async (values, actions) => {
       try {
-        const { data } = await axios.post('/api/v1/login', values);
+        const { data } = await axios.post(routes.login, values);
         if (data.token) {
           const user = { token: data.token, username: data.username };
           logIn(user);
@@ -95,7 +96,7 @@ const Login = () => {
               <div className="text-center">
                 <span>{t('login.notRegistered')}</span>
                 {' '}
-                <Link to="/signup">{t('login.signup')}</Link>
+                <Link to={routes.signup}>{t('login.signup')}</Link>
               </div>
             </div>
           </div>

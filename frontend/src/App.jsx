@@ -1,6 +1,4 @@
-/* eslint-disable consistent-return */
-/* eslint-disable react/jsx-no-constructed-context-values */
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -15,6 +13,7 @@ import SingUp from './pages/SingUp.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
 import { fetchAuthData } from './store/slices/loaderSlice.js';
 import AuthContext, { useAuth } from './context/index.jsx';
+import routes from './routes.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
@@ -29,11 +28,10 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const memoizedValues = useMemo(() => ({ logIn, logOut, user }), [user]);
+
   return (
-    <AuthContext.Provider value={{
-      logIn, logOut, user,
-    }}
-    >
+    <AuthContext.Provider value={memoizedValues}>
       {children}
     </AuthContext.Provider>
   );
@@ -41,7 +39,7 @@ const AuthProvider = ({ children }) => {
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
-  return auth.user ? children : <Navigate to="/login" />;
+  return auth.user ? children : <Navigate to={routes.login} />;
 };
 
 const App = () => {
@@ -49,7 +47,7 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: routes.home,
       element: (
         <AuthProvider>
           <Home />
@@ -68,11 +66,11 @@ const App = () => {
           },
         },
         {
-          path: 'login',
+          path: routes.login,
           element: <Login />,
         },
         {
-          path: 'signup',
+          path: routes.singup,
           element: <SingUp />,
         },
       ],

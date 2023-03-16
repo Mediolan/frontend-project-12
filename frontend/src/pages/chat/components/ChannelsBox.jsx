@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React from 'react';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';

@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/index.jsx';
 import { registrationFormValidation } from '../schemas/validations.js';
+import routes from '../routes.js';
 
 const SingUp = () => {
   const navigate = useNavigate();
@@ -21,9 +22,12 @@ const SingUp = () => {
     validationSchema: registrationFormValidation,
     onSubmit: async (values, actions) => {
       try {
-        const res = await axios.post('/api/v1/signup', { username: values.username, password: values.password });
+        const res = await axios.post(
+          routes.signup,
+          { username: values.username, password: values.password },
+        );
         logIn(res.data);
-        navigate('/');
+        navigate(routes.home);
       } catch (error) {
         if (!error.isAxiosError) {
           throw error;

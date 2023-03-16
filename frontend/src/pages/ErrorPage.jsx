@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useRouteError } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import routes from '../routes.js';
 
 const ErrorPage = () => {
   const { t } = useTranslation();
@@ -10,7 +11,7 @@ const ErrorPage = () => {
     <>
       <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
         <div className="container">
-          <Link className="navbar-brand" to="/">{t('header.hexletChat')}</Link>
+          <Link className="navbar-brand" to={routes.home}>{t('header.hexletChat')}</Link>
         </div>
       </nav>
       {error.statusText ? (

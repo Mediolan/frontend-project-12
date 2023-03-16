@@ -9,7 +9,6 @@ import { closeModal } from '../../../store/slices/modalSlice.js';
 import { useSocketContext } from '../../../context/index.jsx';
 import { channelsSelectors, getChannelsName } from '../../../store/selectors.js';
 import { channelNameValidation } from '../../../schemas/validations.js';
-// eslint-disable-next-line max-len
 
 const AddNewChannel = ({ handleClose }) => {
   const { t } = useTranslation();
