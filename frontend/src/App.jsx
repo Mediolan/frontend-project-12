@@ -39,7 +39,7 @@ const AuthProvider = ({ children }) => {
 
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
-  return auth.user ? children : <Navigate to={routes.login} />;
+  return auth.user ? children : <Navigate to={routes.loginPage} />;
 };
 
 const App = () => {
@@ -47,7 +47,7 @@ const App = () => {
 
   const router = createBrowserRouter([
     {
-      path: routes.home,
+      path: routes.homePage,
       element: (
         <AuthProvider>
           <Home />
@@ -66,11 +66,11 @@ const App = () => {
           },
         },
         {
-          path: routes.login,
+          path: routes.loginPage,
           element: <Login />,
         },
         {
-          path: routes.singup,
+          path: routes.signupPage,
           element: <SingUp />,
         },
       ],

@@ -27,7 +27,7 @@ const SingUp = () => {
           { username: values.username, password: values.password },
         );
         logIn(res.data);
-        navigate(routes.home);
+        navigate(routes.homePage);
       } catch (error) {
         if (!error.isAxiosError) {
           throw error;

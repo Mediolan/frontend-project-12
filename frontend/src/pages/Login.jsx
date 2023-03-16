@@ -24,7 +24,7 @@ const Login = () => {
         if (data.token) {
           const user = { token: data.token, username: data.username };
           logIn(user);
-          navigate('/');
+          navigate(routes.homePage);
         }
       } catch (error) {
         console.error(error);
@@ -96,7 +96,7 @@ const Login = () => {
               <div className="text-center">
                 <span>{t('login.notRegistered')}</span>
                 {' '}
-                <Link to={routes.signup}>{t('login.signup')}</Link>
+                <Link to={routes.signupPage}>{t('login.signup')}</Link>
               </div>
             </div>
           </div>

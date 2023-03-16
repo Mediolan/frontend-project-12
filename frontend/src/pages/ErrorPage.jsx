@@ -11,7 +11,7 @@ const ErrorPage = () => {
     <>
       <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
         <div className="container">
-          <Link className="navbar-brand" to={routes.home}>{t('header.hexletChat')}</Link>
+          <Link className="navbar-brand" to={routes.homePage}>{t('header.hexletChat')}</Link>
         </div>
       </nav>
       {error.statusText ? (
@@ -21,7 +21,7 @@ const ErrorPage = () => {
             {t('notFound.title')}
           </h1>
           {t('notFound.message')}
-          <a href="/">{t('notFound.link')}</a>
+          <a href={routes.homePage}>{t('notFound.link')}</a>
         </div>
       ) : (
         <i>{error.message}</i>
