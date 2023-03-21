@@ -31,37 +31,18 @@ export default async () => {
     });
 
   const socket = io();
-  const sendMessage = (message) => {
-    socket.timeout(3000).emit('newMessage', message, (err, response) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(response.status);
-    });
+
+  const acknolegment = (err, response) => {
+    if (!response.status) {
+      throw err;
+    }
   };
-  const createChannel = (channel) => {
-    socket.timeout(3000).emit('newChannel', channel, (err, response) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(response.status);
-    });
-  };
-  const renameChannel = (channel) => {
-    socket.timeout(3000).emit('renameChannel', channel, (err, response) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(response.status);
-    });
-  };
-  const removeChannel = (channel) => {
-    socket.timeout(3000).emit('removeChannel', channel, (err, response) => {
-      if (err) {
-        console.log(err);
-      }
-      console.log(response.status);
-    });
+
+  const api = {
+    sendMessage: (message) => { socket.timeout(3000).emit('newMessage', message, acknolegment); },
+    createChannel: (channel) => { socket.timeout(3000).emit('newChannel', channel, acknolegment); },
+    renameChannel: (channel) => { socket.timeout(3000).emit('removeChannel', channel, acknolegment); },
+    removeChannel: (channel) => { socket.timeout(3000).emit('removeChannel', channel, acknolegment); },
   };
 
   socket.on('newMessage', (payload) => {
@@ -89,13 +70,7 @@ export default async () => {
       <ErrorBoundary>
         <Provider store={store}>
           <I18nextProvider i18nextInstance={i18nextInstance}>
-            <SocketContext.Provider value={{
-              sendMessage,
-              createChannel,
-              renameChannel,
-              removeChannel,
-            }}
-            >
+            <SocketContext.Provider value={{ api }}>
               <App />
             </SocketContext.Provider>
           </I18nextProvider>

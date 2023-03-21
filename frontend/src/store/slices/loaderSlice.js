@@ -28,7 +28,7 @@ const loaderSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchAuthData.fulfilled, (state) => {
-        state.loadingStatus = 'idle';
+        state.loadingStatus = 'finish';
         state.error = null;
       })
       .addCase(fetchAuthData.rejected, (state, action) => {

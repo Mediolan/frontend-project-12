@@ -1,26 +1,29 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useMemo, useState } from 'react';
 import {
   createBrowserRouter,
   RouterProvider,
   Navigate,
 } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
+import { useDispatch } from 'react-redux';
 import Chat from './pages/chat/Chat.jsx';
 import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
 import SingUp from './pages/SingUp.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
-import { fetchAuthData } from './store/slices/loaderSlice.js';
 import AuthContext, { useAuth } from './context/index.jsx';
 import routes from './routes.js';
+import { fetchAuthData } from './store/slices/loaderSlice.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
-  const [user, setUser] = useState(currentUser ? { username: currentUser.username } : null);
+  const [user, setUser] = useState(currentUser
+    ? { ...currentUser } : null);
+
   const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
-    setUser({ username: userData.username });
+    setUser({ ...userData });
   };
 
   const logOut = () => {
@@ -28,7 +31,9 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  const memoizedValues = useMemo(() => ({ logIn, logOut, user }), [user]);
+  const memoizedValues = useMemo(() => ({
+    logIn, logOut, user,
+  }), [user]);
 
   return (
     <AuthContext.Provider value={memoizedValues}>
@@ -42,26 +47,22 @@ const PrivateRoute = ({ children }) => {
   return auth.user ? children : <Navigate to={routes.loginPage} />;
 };
 
-const App = () => {
+const Router = () => {
   const dispatch = useDispatch();
+  const { user } = useAuth();
 
   const router = createBrowserRouter([
     {
       path: routes.homePage,
-      element: (
-        <AuthProvider>
-          <Home />
-          <ToastContainer />
-        </AuthProvider>),
+      element: <Home />,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
           element: <PrivateRoute><Chat /></PrivateRoute>,
-          loader: async () => {
-            const userData = JSON.parse(localStorage.getItem('user'));
-            if (userData) {
-              await dispatch(fetchAuthData(userData.token));
+          loader: () => {
+            if (user) {
+              dispatch(fetchAuthData(user.token));
             }
           },
         },
@@ -79,5 +80,12 @@ const App = () => {
 
   return <RouterProvider router={router} />;
 };
+
+const App = () => (
+  <AuthProvider>
+    <Router />
+    <ToastContainer />
+  </AuthProvider>
+);
 
 export default App;

@@ -12,7 +12,7 @@ const NewMessageField = () => {
   const { t } = useTranslation();
 
   const { user: { username } } = useAuth();
-  const { sendMessage } = useSocketContext();
+  const { api } = useSocketContext();
   const { currentChannelId } = useSelector((state) => state.channels);
   const inputRef = useRef(null);
 
@@ -39,7 +39,7 @@ const NewMessageField = () => {
       };
 
       try {
-        await sendMessage(message);
+        await api.sendMessage(message);
         formik.resetForm();
       } catch (e) {
         console.log(e);

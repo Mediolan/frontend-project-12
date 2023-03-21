@@ -12,7 +12,7 @@ import { channelNameValidation } from '../../../schemas/validations.js';
 
 const AddNewChannel = ({ handleClose }) => {
   const { t } = useTranslation();
-  const { createChannel } = useSocketContext();
+  const { api } = useSocketContext();
   const channels = useSelector(getChannelsName);
 
   const formik = useFormik({
@@ -24,11 +24,12 @@ const AddNewChannel = ({ handleClose }) => {
       const filteredName = leoProfanity.clean(name);
       const newChannel = { name: filteredName };
       try {
-        await createChannel(newChannel);
+        await api.createChannel(newChannel);
         toast.success(t('toast.created'));
         handleClose();
       } catch (e) {
         actions.setSubmitting(false);
+        throw e;
       }
     },
     validateOnBlur: false,
@@ -89,7 +90,7 @@ const AddNewChannel = ({ handleClose }) => {
 
 const RenameChannel = ({ handleClose }) => {
   const { t } = useTranslation();
-  const { renameChannel } = useSocketContext();
+  const { api } = useSocketContext();
   const channels = useSelector(getChannelsName);
   const channelId = useSelector((state) => state.modal.channelId);
   const channel = useSelector((state) => channelsSelectors.selectById(state, channelId));
@@ -109,7 +110,7 @@ const RenameChannel = ({ handleClose }) => {
       const filteredName = leoProfanity.clean(name);
       const renamedChannel = { name: filteredName, id: channelId };
       try {
-        await renameChannel(renamedChannel);
+        await api.renameChannel(renamedChannel);
         toast.success(t('toast.renamed'));
         handleClose();
       } catch (e) {
@@ -179,17 +180,17 @@ const RenameChannel = ({ handleClose }) => {
 const RemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();
   const [sending, setSending] = useState(false);
-  const { removeChannel } = useSocketContext();
+  const { api } = useSocketContext();
   const channelId = useSelector((state) => state.modal.channelId);
   const handleRemove = async () => {
     setSending(true);
     try {
-      await removeChannel({ id: channelId });
+      await api.removeChannel({ id: channelId });
       toast.success(t('toast.removed'));
       handleClose();
     } catch (e) {
-      console.log(e);
       setSending(false);
+      throw e;
     }
   };
 
