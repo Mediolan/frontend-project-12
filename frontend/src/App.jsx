@@ -1,4 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useMemo, useState } from 'react';
 import {
   createBrowserRouter,
@@ -12,18 +12,18 @@ import Login from './pages/Login.jsx';
 import Home from './pages/Home.jsx';
 import SingUp from './pages/SingUp.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
-import AuthContext, { useAuth } from './context/index.jsx';
+import AuthContext, { TokenContext, useAuth, useTokenContext } from './context/index.jsx';
 import routes from './routes.js';
 import { fetchAuthData } from './store/slices/loaderSlice.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(currentUser
-    ? { ...currentUser } : null);
+    ? { username: currentUser.username } : null);
 
   const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
-    setUser({ ...userData });
+    setUser({ username: userData.username });
   };
 
   const logOut = () => {
@@ -42,6 +42,14 @@ const AuthProvider = ({ children }) => {
   );
 };
 
+const TokenProvider = ({ children }) => {
+  const currentUser = JSON.parse(localStorage.getItem('user'));
+  const [token, setToken] = useState(currentUser
+    ? currentUser.token : null);
+
+  return <TokenContext.Provider value={{ token, setToken }}>{children}</TokenContext.Provider>;
+};
+
 const PrivateRoute = ({ children }) => {
   const auth = useAuth();
   return auth.user ? children : <Navigate to={routes.loginPage} />;
@@ -49,20 +57,20 @@ const PrivateRoute = ({ children }) => {
 
 const Router = () => {
   const dispatch = useDispatch();
-  const { user } = useAuth();
-  console.log(user);
+  const { token } = useTokenContext();
+
   const router = createBrowserRouter([
     {
       path: routes.homePage,
-      element: <Home />,
+      element: <AuthProvider><Home /></AuthProvider>,
       errorElement: <ErrorPage />,
       children: [
         {
           index: true,
           element: <PrivateRoute><Chat /></PrivateRoute>,
           loader: () => {
-            if (user) {
-              dispatch(fetchAuthData(user.token));
+            if (token) {
+              dispatch(fetchAuthData(token));
             }
           },
         },
@@ -82,10 +90,10 @@ const Router = () => {
 };
 
 const App = () => (
-  <AuthProvider>
+  <TokenProvider>
     <Router />
     <ToastContainer />
-  </AuthProvider>
+  </TokenProvider>
 );
 
 export default App;
