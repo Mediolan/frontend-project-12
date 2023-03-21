@@ -50,7 +50,7 @@ const PrivateRoute = ({ children }) => {
 const Router = () => {
   const dispatch = useDispatch();
   const { user } = useAuth();
-
+  console.log(user);
   const router = createBrowserRouter([
     {
       path: routes.homePage,
