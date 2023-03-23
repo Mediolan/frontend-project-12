@@ -60,7 +60,7 @@ export default async () => {
 
   const rollbarConfig = {
     enabled: true,
-    accessToken: 'ss', // process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
+    accessToken: process.env.REACT_APP_ROLLBAR_ACCESS_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
