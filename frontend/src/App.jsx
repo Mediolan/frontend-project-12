@@ -1,29 +1,31 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useMemo, useState } from 'react';
 import {
-  createBrowserRouter,
-  RouterProvider,
+  // createBrowserRouter,
+  // RouterProvider,
+  BrowserRouter as Router,
   Navigate,
+  Route,
+  Routes,
+  Outlet,
 } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { useDispatch } from 'react-redux';
 import Chat from './pages/chat/Chat.jsx';
 import Login from './pages/Login.jsx';
-import Home from './pages/Home.jsx';
+import Nav from './pages/Nav.jsx';
 import SingUp from './pages/SingUp.jsx';
-import ErrorPage from './pages/ErrorPage.jsx';
-import AuthContext, { TokenContext, useAuth, useTokenContext } from './context/index.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import AuthContext, { useAuth } from './context/index.jsx';
 import routes from './routes.js';
-import { fetchAuthData } from './store/slices/loaderSlice.js';
 
 const AuthProvider = ({ children }) => {
   const currentUser = JSON.parse(localStorage.getItem('user'));
   const [user, setUser] = useState(currentUser
-    ? { username: currentUser.username } : null);
+    ? { ...currentUser } : null);
 
   const logIn = (userData) => {
     localStorage.setItem('user', JSON.stringify(userData));
-    setUser({ username: userData.username });
+    setUser(userData);
   };
 
   const logOut = () => {
@@ -42,58 +44,26 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-const TokenProvider = ({ children }) => {
-  const currentUser = JSON.parse(localStorage.getItem('user'));
-  const [token, setToken] = useState(currentUser
-    ? currentUser.token : null);
-
-  return <TokenContext.Provider value={{ token, setToken }}>{children}</TokenContext.Provider>;
-};
-
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = () => {
   const auth = useAuth();
-  return auth.user ? children : <Navigate to={routes.loginPage} />;
-};
-
-const Router = () => {
-  const dispatch = useDispatch();
-  const { token } = useTokenContext();
-
-  const router = createBrowserRouter([
-    {
-      path: routes.homePage,
-      element: <AuthProvider><Home /></AuthProvider>,
-      errorElement: <ErrorPage />,
-      children: [
-        {
-          index: true,
-          element: <PrivateRoute><Chat /></PrivateRoute>,
-          loader: () => {
-            if (token) {
-              dispatch(fetchAuthData(token));
-            }
-          },
-        },
-        {
-          path: routes.loginPage,
-          element: <Login />,
-        },
-        {
-          path: routes.signupPage,
-          element: <SingUp />,
-        },
-      ],
-    },
-  ]);
-
-  return <RouterProvider router={router} />;
+  return auth.user ? <Outlet /> : <Navigate to={routes.loginPage} />;
 };
 
 const App = () => (
-  <TokenProvider>
-    <Router />
-    <ToastContainer />
-  </TokenProvider>
+  <AuthProvider>
+    <Router>
+      <Nav />
+      <Routes>
+        <Route path={routes.loginPage} element={<Login />} />
+        <Route path={routes.signupPage} element={<SingUp />} />
+        <Route path={routes.homePage} element={<PrivateRoute />}>
+          <Route path="" element={<Chat />} />
+        </Route>
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+      <ToastContainer />
+    </Router>
+  </AuthProvider>
 );
 
 export default App;

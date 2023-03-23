@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import leoProfanity from 'leo-profanity';
+import { toast } from 'react-toastify';
 import { useAuth, useSocketContext } from '../../../context';
 
 const NewMessageField = () => {
@@ -42,8 +43,10 @@ const NewMessageField = () => {
         await api.sendMessage(message);
         formik.resetForm();
       } catch (e) {
-        console.log(e);
+        toast.error(t('errors.network'));
+        throw e;
       }
+
       formik.setSubmitting(false);
       inputRef.current.focus();
     },

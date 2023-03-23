@@ -1,11 +1,12 @@
 /* eslint-disable no-param-reassign */
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import routes from '../../routes';
 
 export const fetchAuthData = createAsyncThunk(
   'fetchAuthData',
   async (token) => {
-    const response = await axios.get('/api/v1/data', {
+    const response = await axios.get(routes.data, {
       headers: { Authorization: `Bearer ${token}` },
     });
 

@@ -5,14 +5,13 @@ import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { useAuth, useTokenContext } from '../context/index.jsx';
+import { useAuth } from '../context/index.jsx';
 import routes from '../routes.js';
 
 const Login = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { logIn } = useAuth();
-  const { setToken } = useTokenContext();
   const inputRef = useRef();
   const formik = useFormik({
     initialValues: {
@@ -24,7 +23,6 @@ const Login = () => {
         const { data } = await axios.post(routes.login, values);
         if (data.token) {
           const user = { token: data.token, username: data.username };
-          setToken(data.token);
           logIn(user);
           navigate(routes.homePage);
         }

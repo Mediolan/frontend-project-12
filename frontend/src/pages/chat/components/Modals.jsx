@@ -29,6 +29,7 @@ const AddNewChannel = ({ handleClose }) => {
         handleClose();
       } catch (e) {
         actions.setSubmitting(false);
+        toast.error(t('errors.network'));
         throw e;
       }
     },
@@ -116,9 +117,8 @@ const RenameChannel = ({ handleClose }) => {
       } catch (e) {
         inputRef.current.select();
         actions.setSubmitting(false);
-        if (!e.isAxiosError) {
-          throw e;
-        }
+        toast.error(t('errors.network'));
+        throw e;
       }
     },
     validateOnBlur: false,
@@ -190,6 +190,7 @@ const RemoveChannel = ({ handleClose }) => {
       handleClose();
     } catch (e) {
       setSending(false);
+      toast.error(t('errors.network'));
       throw e;
     }
   };
@@ -232,7 +233,7 @@ const modals = {
 
 const Modals = () => {
   const dispatch = useDispatch();
-  const modalType = useSelector((state) => state.modal.activeModal);
+  const { isOpened, modalType } = useSelector((state) => state.modal);
 
   const handleClose = () => {
     dispatch(closeModal());
@@ -241,7 +242,7 @@ const Modals = () => {
   const ActiveModal = modals[modalType];
 
   return (
-    <Modal show={modalType != null} onHide={handleClose} centered>
+    <Modal show={isOpened} onHide={handleClose} centered>
       {ActiveModal && <ActiveModal handleClose={handleClose} />}
     </Modal>
   );
