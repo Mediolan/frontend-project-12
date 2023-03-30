@@ -32,17 +32,20 @@ export default async () => {
 
   const socket = io();
 
-  const acknolegment = (err, response) => {
-    if (!response.status) {
-      throw err;
-    }
-  };
+  const withConfirm = (...arg) => new Promise((resolve, reject) => {
+    socket.timeout(3000).emit(...arg, (err, response) => {
+      if (response?.status === 'ok') {
+        resolve(response.data);
+      }
+      reject();
+    });
+  });
 
   const api = {
-    sendMessage: (message) => { socket.timeout(3000).emit('newMessage', message, acknolegment); },
-    createChannel: (channel) => { socket.timeout(3000).emit('newChannel', channel, acknolegment); },
-    renameChannel: (channel) => { socket.timeout(3000).emit('renameChannel', channel, acknolegment); },
-    removeChannel: (channel) => { socket.timeout(3000).emit('removeChannel', channel, acknolegment); },
+    sendMessage: (message) => withConfirm('newMessage', message),
+    createChannel: (channel) => withConfirm('newChannel', channel),
+    renameChannel: (channel) => withConfirm('renameChannel', channel),
+    removeChannel: (channel) => withConfirm('removeChannel', channel),
   };
 
   socket.on('newMessage', (payload) => {

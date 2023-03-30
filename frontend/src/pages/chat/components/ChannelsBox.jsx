@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Button, ButtonGroup, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -10,8 +10,19 @@ import { channelsSelectors } from '../../../store/selectors';
 const ChannelsBox = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { currentChannelId } = useSelector((state) => state.channels);
+  const { currentChannelId, defaultChannelId } = useSelector((state) => state.channels);
   const channels = useSelector(channelsSelectors.selectAll);
+  const lastChannelsItemId = channels.at(-1).id;
+  const channelsRef = useRef();
+
+  useEffect(() => {
+    if (currentChannelId === defaultChannelId) {
+      channelsRef.current.scrollTop = 0;
+    }
+    if (currentChannelId === lastChannelsItemId) {
+      channelsRef.current.scrollTop = channelsRef.current.scrollHeight;
+    }
+  }, [currentChannelId, lastChannelsItemId, defaultChannelId]);
 
   const handleChooseChannel = (channelId) => () => {
     dispatch(setCurrentChannelId(channelId));
@@ -29,7 +40,7 @@ const ChannelsBox = () => {
   return (
     <>
       <ChannelsHeader handleAddChannel={handleAddChannel} />
-      <ul className="nav flex-column nav-pills nav-fill px-2">
+      <ul ref={channelsRef} id="channels-box" className="nav flex-column nav-pills nav-fill px-2 mb-3 overflow-auto h-100 d-block">
         {channels.map((channel) => (
           <li key={channel.id} className="nav-item w-100">
             {channel.removable

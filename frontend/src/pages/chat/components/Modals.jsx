@@ -6,13 +6,15 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import leoProfanity from 'leo-profanity';
 import { closeModal } from '../../../store/slices/modalSlice.js';
-import { useSocketContext } from '../../../context/index.jsx';
+import { useChatApi } from '../../../context/index.jsx';
 import { channelsSelectors, getChannelsName } from '../../../store/selectors.js';
 import { channelNameValidation } from '../../../schemas/validations.js';
+import { setCurrentChannelId } from '../../../store/slices/channelsSlice.js';
 
 const AddNewChannel = ({ handleClose }) => {
+  const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { api } = useSocketContext();
+  const { api } = useChatApi();
   const channels = useSelector(getChannelsName);
 
   const formik = useFormik({
@@ -24,7 +26,8 @@ const AddNewChannel = ({ handleClose }) => {
       const filteredName = leoProfanity.clean(name);
       const newChannel = { name: filteredName };
       try {
-        await api.createChannel(newChannel);
+        const data = await api.createChannel(newChannel);
+        dispatch(setCurrentChannelId(data.id));
         toast.success(t('toast.created'));
         handleClose();
       } catch (e) {
@@ -91,7 +94,7 @@ const AddNewChannel = ({ handleClose }) => {
 
 const RenameChannel = ({ handleClose }) => {
   const { t } = useTranslation();
-  const { api } = useSocketContext();
+  const { api } = useChatApi();
   const channels = useSelector(getChannelsName);
   const channelId = useSelector((state) => state.modal.channelId);
   const channel = useSelector((state) => channelsSelectors.selectById(state, channelId));
@@ -180,7 +183,7 @@ const RenameChannel = ({ handleClose }) => {
 const RemoveChannel = ({ handleClose }) => {
   const { t } = useTranslation();
   const [sending, setSending] = useState(false);
-  const { api } = useSocketContext();
+  const { api } = useChatApi();
   const channelId = useSelector((state) => state.modal.channelId);
   const handleRemove = async () => {
     setSending(true);

@@ -27,7 +27,7 @@ const Login = () => {
           navigate(routes.homePage);
         }
       } catch (error) {
-        console.error(error);
+        actions.setSubmitting(false);
         if (!error.isAxiosError) {
           toast.error(t('errors.unknown'));
           return;
@@ -65,6 +65,7 @@ const Login = () => {
                       placeholder={t('login.username')}
                       required
                       autoFocus
+                      disabled={formik.isSubmitting}
                       isInvalid={formik.errors.authentication}
                       onChange={formik.handleChange}
                       value={formik.values.username}
@@ -80,6 +81,7 @@ const Login = () => {
                       placeholder={t('login.password')}
                       required
                       type="password"
+                      disabled={formik.isSubmitting}
                       isInvalid={formik.errors.authentication}
                       onChange={formik.handleChange}
                       value={formik.values.password}
@@ -89,7 +91,14 @@ const Login = () => {
                     </Form.Control.Feedback>
                   </FloatingLabel>
                 </Form.Group>
-                <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('login.submit')}</Button>
+                <Button
+                  disabled={formik.isSubmitting}
+                  className="w-100 mb-3"
+                  variant="outline-primary"
+                  type="submit"
+                >
+                  {t('login.submit')}
+                </Button>
               </Form>
             </div>
             <div className="card-footer p-4">

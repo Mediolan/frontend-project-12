@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 import { useAuth } from '../context/index.jsx';
 import { registrationFormValidation } from '../schemas/validations.js';
 import routes from '../routes.js';
@@ -29,7 +30,9 @@ const SingUp = () => {
         logIn(res.data);
         navigate(routes.homePage);
       } catch (error) {
+        actions.setSubmitting(false);
         if (!error.isAxiosError) {
+          toast.error(t('errors.unknown'));
           throw error;
         }
         if (error.response.status === 409) {
@@ -37,6 +40,7 @@ const SingUp = () => {
           inputRef.current.select();
           return;
         }
+        toast.error(t('errors.network'));
         throw error;
       }
     },
@@ -62,6 +66,7 @@ const SingUp = () => {
                     <Form.Control
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      disabled={formik.isSubmitting}
                       name="username"
                       autoComplete="username"
                       placeholder={t('signup.username')}
@@ -84,6 +89,7 @@ const SingUp = () => {
                     <Form.Control
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      disabled={formik.isSubmitting}
                       name="password"
                       autoComplete="new-password"
                       placeholder={t('signup.password')}
@@ -105,6 +111,7 @@ const SingUp = () => {
                     <Form.Control
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      disabled={formik.isSubmitting}
                       name="confirmPassword"
                       autoComplete="current-password"
                       placeholder={t('signup.confirm')}
@@ -123,7 +130,14 @@ const SingUp = () => {
                     </Form.Control.Feedback>
                   </FloatingLabel>
                 </Form.Group>
-                <Button className="w-100 mb-3" variant="outline-primary" type="submit">{t('signup.submit')}</Button>
+                <Button
+                  disabled={formik.isSubmitting}
+                  className="w-100 mb-3"
+                  variant="outline-primary"
+                  type="submit"
+                >
+                  {t('signup.submit')}
+                </Button>
               </Form>
             </div>
           </div>

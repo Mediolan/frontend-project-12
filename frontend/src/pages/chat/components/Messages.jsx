@@ -12,14 +12,14 @@ const Message = ({ username, body }) => (
 
 const Messages = () => {
   const currentChannelMessages = useSelector(getMessagesForCurrentChannel);
-  const chatRef = useRef();
+  const messagesRef = useRef();
 
   useEffect(() => {
-    chatRef.current.scrollTop = chatRef.current.scrollHeight;
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
   }, [currentChannelMessages.length]);
 
   return (
-    <div ref={chatRef} id="messages-box" className="chat-messages overflow-auto px-5 ">
+    <div ref={messagesRef} id="messages-box" className="chat-messages overflow-auto px-5 ">
       {currentChannelMessages.map(({ id, username, body }) => (
         <Message
           key={id}

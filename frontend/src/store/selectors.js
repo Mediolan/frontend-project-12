@@ -22,5 +22,5 @@ export const getChannelsName = (state) => {
 
 export const getCurrentChannelName = (state) => {
   const { entities, currentChannelId } = state.channels;
-  return entities[currentChannelId].name;
+  return entities[currentChannelId]?.name;
 };

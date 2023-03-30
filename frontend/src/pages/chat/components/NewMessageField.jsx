@@ -7,13 +7,13 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import leoProfanity from 'leo-profanity';
 import { toast } from 'react-toastify';
-import { useAuth, useSocketContext } from '../../../context';
+import { useAuth, useChatApi } from '../../../context';
 
 const NewMessageField = () => {
   const { t } = useTranslation();
 
   const { user: { username } } = useAuth();
-  const { api } = useSocketContext();
+  const { api } = useChatApi();
   const { currentChannelId } = useSelector((state) => state.channels);
   const inputRef = useRef(null);
 

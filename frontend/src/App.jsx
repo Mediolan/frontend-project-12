@@ -1,8 +1,5 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 import React, { useMemo, useState } from 'react';
 import {
-  // createBrowserRouter,
-  // RouterProvider,
   BrowserRouter as Router,
   Navigate,
   Route,
